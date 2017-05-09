@@ -4,7 +4,7 @@ Hardware of EMS
 Sensors
 -------------------
 
-* 
+* Telecontrolli capacitive rain sensor
 
 
 Block diagram
