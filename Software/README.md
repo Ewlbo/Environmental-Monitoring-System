@@ -3,7 +3,7 @@ Software of EMS
 
 Reading ADC example
 -------------------
-Full code avialable in ADC folder
+Full code available in ADC folder
 
 <code>
 
@@ -21,7 +21,7 @@ Full code avialable in ADC folder
 	while(!(ADCSRA & (1<<ADIF)));
 
 	//Clear ADIF by writing 1 to it
-	
+
 	ADCSRA|=(1<<ADIF);
 
 	return(ADC);
