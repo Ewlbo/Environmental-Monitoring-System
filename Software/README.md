@@ -1,7 +1,7 @@
 Software of EMS
 ===============
 
-Reading ADC example
+Reading ADC
 -------------------
 Full code available in ADC folder
 
