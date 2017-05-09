@@ -14,5 +14,5 @@ Block diagram
 Pinout
 ----------------
 <p align="center">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Hardware/pinout.png" width="20%">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Hardware/pinout.png" width="40%">
 </p>
