@@ -6,7 +6,6 @@ Reading ADC example
 Full code available in ADC folder
 
 <code>
-
 	// Select ADC Channel
 
 	ADMUX	&=	0xf0;
