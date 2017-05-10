@@ -1,7 +1,7 @@
 Software of EMS
 ===============
 
-Reading ADC
+Reading ADCr
 -------------------
 Full code available in ADC folder
 
@@ -9,7 +9,7 @@ Full code available in ADC folder
 	// Select ADC Channel
 
 	ADMUX	&=	0xf0;
-	ADMUX	|=	0; ADC0
+	ADMUX	|=	0;			//ADC0
 
 	// Start Single conversion
 
