@@ -12,11 +12,11 @@ Sensors
 --------------
 
 * [Telecontrolli](https://github.com/Telecontrolli) capacitive rain sensor
-* MQ-135 gas sensor
-* [BoschSensortec](https://github.com/boschsensortec) BME280 humidity, temperature and barometric pressure sensor
+* Gas sensor
+* [BoschSensortec](https://github.com/boschsensortec) Humidity, temperature and barometric pressure sensor
 * Wind speed (IR RPM sensor)
 * Wind direction (Reed-switch w/ voltage divider)
-* Light sensor using intrumentational amplifier and wheatstone bridge
+* Light sensor using intrumentation amplifier and Wheatstone bridge
 
 More sensors to be used in future
 
@@ -29,13 +29,13 @@ Main board
 
 Features:
 
-* ATmega328P
+* ATmega328P microcontroller
 * AMS1117 3.3V and 5V voltage regulator
-* Texas Instruments 74HC4051 analog multiplexer
-* Instrumentational amplifier INA126P
-* External 16MHz Oscillator 
+* 74HC4051 analog multiplexer
+* INA126P instrumentation amplifier and Wheatstone bridge
+* 16MHz external oscillator 
 
-Sensor board
+Main sensor board
 --------------
 
 <p align="center" style="text-align: center;">
