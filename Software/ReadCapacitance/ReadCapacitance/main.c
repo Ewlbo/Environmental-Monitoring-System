@@ -30,7 +30,7 @@ int main(void)
 {
 	setup();
 	serialWrite("Reading capacitance\n\r");
-	int capacitance = readCapacitance();	
+	int capacitance = readCapacitance();
 }
 
 void setup(void)
@@ -84,7 +84,7 @@ uint16_t ReadADC(uint8_t adcx)
 {
 	// Select ADC Channel
 	ADMUX	&=	0xf0;
-	ADMUX	|=	0; ADC0
+	ADMUX	|=	0;
 
 	// Start Single conversion
 
