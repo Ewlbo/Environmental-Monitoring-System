@@ -16,7 +16,7 @@ Sensors
 * [BoschSensortec](https://github.com/boschsensortec) BME280 humidity, temperature and barometric pressure sensor
 * Wind speed (IR RPM sensor)
 * Wind direction (Reed-switch w/ voltage divider)
-* Light sensor using intrumentational amplifier
+* Light sensor using intrumentational amplifier and wheatstone bridge
 
 More sensors to be used in future
 
