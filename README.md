@@ -35,7 +35,6 @@ Features:
 * Instrumentational amplifier INA126P
 * External 16MHz Oscillator 
 
-
 Sensor board
 --------------
 
