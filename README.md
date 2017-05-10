@@ -11,9 +11,9 @@ A weather station based on Atmel ATmega328P microcontroller using 2.4GHz RF tran
 Sensors
 --------------
 
-* @Telecontrolli capacitive rain sensor
+* [Telecontrolli](https://github.com/Telecontrolli) capacitive rain sensor
 * MQ-135 gas sensor
-* @BoschSensortec BME280 humidity, temperature and barometric pressure sensor
+* [BoschSensortec](https://github.com/boschsensortec) BME280 humidity, temperature and barometric pressure sensor
 * Wind speed (IR RPM sensor)
 * Wind direction (Reed-switch w/ voltage divider)
 * Light sensor using intrumentational amplifier
@@ -35,3 +35,15 @@ Features:
 * Instrumentational amplifier INA126P
 * External 16MHz Oscillator 
 
+
+Sensor board
+--------------
+
+<p align="center" style="text-align: center;">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/sensorboard.jpg" width="80%">
+</p>
+
+Features:
+
+* BME280 humidity, temperature and barometric pressure sensor
+* MQ-135 gas sensor
