@@ -18,7 +18,6 @@ Sensors
 * Wind direction (Reed-switch w/ voltage divider)
 * Light sensor using intrumentational amplifier and wheatstone bridge
 
-
 More sensors to be used in future
 
 Main board
@@ -35,7 +34,6 @@ Features:
 * Texas Instruments 74HC4051 analog multiplexer
 * Instrumentational amplifier INA126P
 * External 16MHz Oscillator 
-
 
 Sensor board
 --------------
