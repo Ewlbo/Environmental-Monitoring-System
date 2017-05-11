@@ -1,5 +1,5 @@
 <p align="center" style="text-align: center;">
-<a href="https://ewlbo.github.io/Environmental-Monitoring-System/Website/index.html"><img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/LOGO.png" width="80%"></a>
+<a href="https://ewlbo.github.io/Environmental-Monitoring-System/Website/index.html" target="_blank"><img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/LOGO.png" width="80%"></a>
 </p>
 
 Overview
