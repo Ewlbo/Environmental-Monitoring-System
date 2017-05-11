@@ -1,6 +1,6 @@
-[<p align="center" style="text-align: center;">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/LOGO.png" width="80%">
-</p>](https://github.com/Telecontrolli)
+<p align="center" style="text-align: center;">
+<a href="github.com"><img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/LOGO.png" width="80%"></a>
+</p>
 
 Overview
 ===============
