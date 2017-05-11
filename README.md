@@ -30,14 +30,14 @@ Concept
 --------------
 
 <p align="center" style="text-align: center;">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/concept.jpg" width="40%">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/concept.jpg" width="30%">
 </p>
 
 Main board
 --------------
 
 <p align="center" style="text-align: center;">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/mainboard.jpg" width="60%">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/mainboard.jpg" width="50%">
 </p>
 
 Features:
