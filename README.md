@@ -14,8 +14,8 @@ Sensors
 --------------
 
 * [Telecontrolli](https://github.com/Telecontrolli) capacitive rain sensor
-* Gas sensor
-* [BoschSensortec](https://github.com/boschsensortec) Humidity, temperature and barometric pressure sensor
+* Universal gas sensor
+* [Bosch Sensortec](https://github.com/boschsensortec) Humidity, temperature and barometric pressure sensor
 * Wind speed (IR RPM sensor)
 * Wind direction (Reed-switch w/ voltage divider)
 * Light sensor using intrumentation amplifier and Wheatstone bridge
