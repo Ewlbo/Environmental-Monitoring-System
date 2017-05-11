@@ -46,4 +46,4 @@ Main sensor board
 Features:
 
 * BME280 humidity, temperature and barometric pressure sensor
-* MQ-135 gas sensor
+* HS-135 gas sensor
