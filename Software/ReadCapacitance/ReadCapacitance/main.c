@@ -13,8 +13,6 @@ float readCapacitance(void);
 
 volatile unsigned long timer;
 
-
-
 // UART
 #define BUAD	9600
 #define BRC		((F_CPU/16/BUAD) - 1)
@@ -36,19 +34,24 @@ int main(void)
 {
 	setup();
 	
+	char string[8];
 	serialWrite("Read capacitance\n\r");
+	
 	while(1)
 	{
-		//
+		float capacitance = readCapacitance();
+		itoa(capacitance, string, 10);		// Convert float to string
+		serialWrite(string);
+		serialWrite("\n\r");
+		_delay_ms(1000);
 	}
 }
 
 void setup(void)
-{
-	DDRB = 0x20;	
+{	
+	// Capacitor pins
 	DDRC |= A0;				// A0 as OUTPUT
-	DDRC &= ~(A1);			// A1 as INPUT
-	PORTC |= A0;			// Internal pull-up resistor on A0
+	DDRC |= A1;				// A1 as OUTPUT
 	
 	// 16-bit Timer1
 	TCCR1A = (1 << WGM11);	//Set CTC Bit
@@ -60,6 +63,11 @@ void setup(void)
 	ADMUX=(1<<REFS0);									// For Aref = AVcc;
 	ADCSRA=(1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);	// Pre-scaler div factor =128
 	
+	// UART
+	UBRR0H = (BRC >> 8);
+	UBRR0L =  BRC;
+	UCSR0B = (1 << TXEN0)  | (1 << TXCIE0);
+	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 	
 	sei();					// Enable interrupt
 	
@@ -70,33 +78,18 @@ float readCapacitance(void)
 {
 	float capacitance;
 	int adc_result;
-	int pullup = 34.8;		// 34.8k ohm (might need calibration)
-	unsigned long t;
-	int i;
+	float IC = 24.48;			// Internal capacitance (error)
 	
-	do 
-	{
-		int i = PINC1;		// Check if A1 is high
-		t++;
-		_delay_us(1);
-	} while (i<1);
+	DDRC &= ~(A0);				// A0 as INPUT
+	PORTC |= A1;				// A1 HIGH (charge)
+	adc_result = ReadADC(0);	// Read ADC from A0
+	PORTC &= ~(A1);				// A1 LOW (discharge)
+	DDRC |= A0;					// A0 as OUTPUT (to make sure it discharges)
 	
-	PORTC &= ~(A1);			// Disable pull-up
-	adc_result = ReadADC(1);
-	PORTC |= A0;			// A0 HIGH
-	_delay_ms(1);
-	DDRC |= A1;				// A1 as OUTPUT
-	PORTC &= ~(A1);			// A1 LOW
-	PORTC &= ~(A0);			// A0 LOW
-	float x = adc_result/1023;
-	float l = log(1.0 - x);
-	capacitance = -(t/pullup)/l;
-	return(capacitance);
+	capacitance = (adc_result*IC)/(1023-adc_result);
 	
+	return(capacitance);	
 }
-
-
-
 
 
 uint16_t ReadADC(uint8_t adcx)
