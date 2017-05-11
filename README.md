@@ -48,6 +48,17 @@ Features:
 * INA126P instrumentation amplifier and Wheatstone bridge
 * 16MHz external oscillator 
 
+RF board
+--------------
+
+
+
+Features:
+
+* [Nordic Semiconductor](http://www.nordicsemi.com/) nRF24L01+ 2.4GHz RF module
+* For testing period PCB trace antenna is used, will be switched to external antenna and different frequency for greater range and less interference in 2.4GHz band
+
+
 Main sensor board
 --------------
 
@@ -59,3 +70,24 @@ Features:
 
 * BME280 humidity, temperature and barometric pressure sensor
 * HS-135 gas sensor
+
+Wind direction
+--------------
+
+
+
+Features:
+
+* Using a reed switch and a magnet
+* Determine wind direction depending on output voltage (voltage divider)
+
+Wind speed
+--------------
+
+
+
+Features:
+
+* IR emitter and IR transistor
+
+
