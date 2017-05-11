@@ -27,7 +27,7 @@ Concept
 --------------
 
 <p align="center" style="text-align: center;">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/concept.jpg" width="80%">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/concept.jpg" width="60%">
 </p>
 
 Main board
