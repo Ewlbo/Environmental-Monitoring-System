@@ -11,6 +11,20 @@ unsigned long micro(void);
 void setup(void);
 float readCapacitance(void);
 
+volatile unsigned long timer;
+
+
+
+// UART
+#define BUAD	9600
+#define BRC		((F_CPU/16/BUAD) - 1)
+#define TX_BUFFER_SIZE	128
+char serialBuffer[TX_BUFFER_SIZE];
+uint8_t serialReadPos = 0;
+uint8_t serialWritePos = 0;
+void appendSerial(char c);
+void serialWrite(char  c[]);
+
 // ADC
 uint16_t ReadADC(uint8_t adcx);
 
@@ -21,26 +35,33 @@ uint16_t ReadADC(uint8_t adcx);
 int main(void)
 {
 	setup();
+	
+	serialWrite("Read capacitance\n\r");
+	while(1)
+	{
+		//
+	}
 }
 
 void setup(void)
 {
-	DDRC |= A0;			// A0 as OUTPUT
-	DDRC &= ~(A1);		// A1 as INPUT
-	PORTC |= A0;		// Internal pull-up resistor on A0
+	DDRB = 0x20;	
+	DDRC |= A0;				// A0 as OUTPUT
+	DDRC &= ~(A1);			// A1 as INPUT
+	PORTC |= A0;			// Internal pull-up resistor on A0
 	
-	// For interrupt every 1 microsecond
-	TCCR0A = (1 << WGM01);			// Set CTC Bit
-	OCR0A = 16;						// 16 ticks for 1 microsecond
-	TIMSK0 = (1 << OCIE0A);
-	TCCR0B = (1 << CS00);			// No pre-scaler used
+	// 16-bit Timer1
+	TCCR1A = (1 << WGM11);	//Set CTC Bit
+	OCR1A = 156;
+	TIMSK1 = (1 << OCIE1A);
+	TCCR1B = (1 << CS10) | (1 << CS12);	//No pre-scaler used
 	
 	// ADC
 	ADMUX=(1<<REFS0);									// For Aref = AVcc;
 	ADCSRA=(1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);	// Pre-scaler div factor =128
 	
 	
-	sei();												// Enable interrupt
+	sei();					// Enable interrupt
 	
 }
 
@@ -49,16 +70,15 @@ float readCapacitance(void)
 {
 	float capacitance;
 	int adc_result;
-	int pullup = 34.8;				// 34.8k ohm (might need calibration)
+	int pullup = 34.8;		// 34.8k ohm (might need calibration)
 	unsigned long t;
-	unsigned long t1 = micro();
 	int i;
 	
 	do 
 	{
-		int i = PINC1;				// Check if A1 is high
-		unsigned long t2 = micro();
-		t = t2 - t1;
+		int i = PINC1;		// Check if A1 is high
+		t++;
+		_delay_us(1);
 	} while (i<1);
 	
 	PORTC &= ~(A1);			// Disable pull-up
@@ -75,12 +95,7 @@ float readCapacitance(void)
 	
 }
 
-unsigned long micro(void)
-{
-	unsigned long microseconds;
-	microseconds++;
-	return(microseconds);
-}
+
 
 
 
@@ -91,29 +106,62 @@ uint16_t ReadADC(uint8_t adcx)
 	ADMUX	|=	adcx;
 
 	// Start Single conversion
-
 	ADCSRA|=(1<<ADSC);
 
 	// Wait for conversion to complete
-
 	while(!(ADCSRA & (1<<ADIF)));
 
 	//Clear ADIF by writing 1 to it
-
 	ADCSRA|=(1<<ADIF);
 
 	return(ADC);
 }
 
-
-ISR(TIMER0_COMPA_vect)
+void appendSerial(char c)
 {
-	unsigned long timer;
-	timer++;
-	if (timer == 4200000000)		// Exactly 70 minutes
+	serialBuffer[serialWritePos] = c;
+	serialWritePos++;
+	
+	if(serialWritePos >= TX_BUFFER_SIZE)
 	{
-		timer = 0;
+		serialWritePos = 0;
 	}
-	micro();
+}
+
+void serialWrite(char c[])
+{
+	for(uint8_t i = 0; i < strlen(c); i++)
+	{
+		appendSerial(c[i]);
+	}
+	
+	if(UCSR0A & (1 << UDRE0))
+	{
+		UDR0 = 0;
+	}
+}
+
+ISR(USART_TX_vect)
+{
+	if(serialReadPos != serialWritePos)
+	{
+		UDR0 = serialBuffer[serialReadPos];
+		serialReadPos++;
+		
+		if(serialReadPos >= TX_BUFFER_SIZE)
+		{
+			serialReadPos++;
+		}
+	}
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+	++timer;
+	
+	if(timer > 50)		
+	{
+		// check gas approx. every 1.5s
+	}
 }
 
