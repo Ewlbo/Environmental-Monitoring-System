@@ -78,8 +78,8 @@ Wind direction
 
 Features:
 
-* Using a reed switch and a magnet
-* Determine wind direction depending on output voltage (voltage divider)
+* Reed switch and voltage divider
+* Determine wind direction depending on output voltage 
 
 Wind speed
 --------------
