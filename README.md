@@ -1,5 +1,5 @@
 <p align="center" style="text-align: center;">
-<a href="github.com"><img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/LOGO.png" width="80%"></a>
+<a href="https://ewlbo.github.io/Environmental-Monitoring-System/Website/index.html"><img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/LOGO.png" width="80%"></a>
 </p>
 
 Overview
@@ -9,6 +9,7 @@ A weather station based on Atmel ATmega328P microcontroller
 
 Raw data is sent to base station via 2.4GHz RF transceiver, then it is sent to a server where the raw data gets processed and published 
 
+[Go to website](https://ewlbo.github.io/Environmental-Monitoring-System/Website/index.html)
 
 Sensors
 --------------
