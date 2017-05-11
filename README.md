@@ -11,6 +11,8 @@ Raw data is sent to base station via 2.4GHz RF transceiver, then it is sent to a
 
 [Go to website](https://ewlbo.github.io/Environmental-Monitoring-System/Website/index.html)
 
+Release date 01.06.2017
+
 Sensors
 --------------
 
