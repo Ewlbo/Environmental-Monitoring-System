@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <util/delay.h>
-#include <math.h>
 
 unsigned long micro(void);
 void setup(void);
@@ -72,7 +71,6 @@ void setup(void)
 	sei();					// Enable interrupt
 	
 }
-
 
 float readCapacitance(void)
 {

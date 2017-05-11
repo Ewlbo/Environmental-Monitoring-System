@@ -197,9 +197,9 @@ uint16_t ReadADC(uint8_t adcx)
  11e:	08 95       	ret
 
 00000120 <readCapacitance>:
+	sei();					// Enable interrupt
 	
 }
-
 
 float readCapacitance(void)
 {
