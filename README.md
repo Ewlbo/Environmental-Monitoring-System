@@ -7,7 +7,7 @@ Overview
 
 A weather station based on Atmel ATmega328P microcontroller
 
-Raw data is sent to base station via 2.4GHz RF transceiver, then it is sent to a server where the raw data gets proccesed and published 
+Raw data is sent to base station via 2.4GHz RF transceiver, then it is sent to a server where the raw data gets processed and published 
 
 
 Sensors
