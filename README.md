@@ -6,5 +6,4 @@ A weather station based on Atmel ATmega328P microcontroller
 
 </p>
 
-
-
+# Overview
