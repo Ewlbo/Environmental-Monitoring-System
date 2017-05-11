@@ -30,7 +30,7 @@ Concept
 --------------
 
 <p align="center" style="text-align: center;">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/concept.jpg" width="30%">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/concept.jpg" width="40%">
 </p>
 
 Main board
