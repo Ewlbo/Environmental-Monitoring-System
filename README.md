@@ -37,7 +37,7 @@ Main board
 --------------
 
 <p align="center" style="text-align: center;">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/mainboard.jpg" width="70%">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/mainboard.jpg" width="60%">
 </p>
 
 Features:
@@ -63,7 +63,7 @@ Main sensor board
 --------------
 
 <p align="center" style="text-align: center;">
-<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/sensorboard.jpg" width="60%">
+<img src="https://github.com/Ewlbo/Environmental-Monitoring-System/blob/master/Images/sensorboard.jpg" width="40%">
 </p>
 
 Features:
