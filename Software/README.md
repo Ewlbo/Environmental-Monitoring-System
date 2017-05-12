@@ -3,13 +3,12 @@ Software of EMS
 
 Reading ADC
 -------------------
-Full code available in ADC folder
 
 <code>
 	// Select ADC Channel
 
 	ADMUX	&=	0xf0;
-	ADMUX	|=	0; ADC0
+	ADMUX	|=	0;			//ADC0
 
 	// Start Single conversion
 
