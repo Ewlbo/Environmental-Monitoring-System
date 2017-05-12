@@ -5,9 +5,9 @@
 //	| |\ \| |___| | | | |/ /     | \__/\| | | || |   | | | | \__/\_| |_  | || | | || |\  | \__/\| |___ 
 //	\_| \_\____/\_| |_/___/       \____/\_| |_/\_|   \_| |_/\____/\___/  \_/\_| |_/\_| \_/\____/\____/ 
 //
-//	Read capacitance from capacitive rain sensor - for EMS 12.05.2017
-                                                                                                   
-                                                                                                   
+//	Read capacitance from Telecontrolli capacitive rain sensor - for EMS 12.05.2017
+//
+
 
 #define F_CPU 16000000UL
 
