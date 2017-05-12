@@ -138,8 +138,8 @@ void enableChannel(int ch)
   cc:	08 95       	ret
 
 000000ce <main>:
-#define	WIND_DIR 3
-#define WIND_SPD 4
+#define	CH3 3			// Wind direction
+#define CH4 4			// Wind speed
 
 int main(void)
 {
@@ -148,10 +148,11 @@ int main(void)
   d0:	88 63       	ori	r24, 0x38	; 56
   d2:	8a b9       	out	0x0a, r24	; 10
 	
-	enableChannel(LIGHT_S);
-  d4:	80 e0       	ldi	r24, 0x00	; 0
+	enableChannel(CH3);
+  d4:	83 e0       	ldi	r24, 0x03	; 3
   d6:	90 e0       	ldi	r25, 0x00	; 0
   d8:	0e 94 40 00 	call	0x80	; 0x80 <enableChannel>
+
 }
   dc:	80 e0       	ldi	r24, 0x00	; 0
   de:	90 e0       	ldi	r25, 0x00	; 0

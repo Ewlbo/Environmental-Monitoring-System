@@ -1,23 +1,21 @@
 #include <avr/io.h>
 
-void enableChannel(int ch);
-
 #define S0 0x08			// PD3
 #define S1 0x10			// PD4
 #define S2 0x20			// PD5
-#define LIGHT_S 0
-#define PHOTOCELL_1 1
-#define PHOTOCELL_2 2
-#define	WIND_DIR 3
-#define WIND_SPD 4
+#define CH0 0			// Light sensor
+#define CH1 1			// Photocell 1
+#define CH2 2			// Photocell 2
+#define	CH3 3			// Wind direction
+#define CH4 4			// Wind speed
+
+void enableChannel(int ch);
 
 int main(void)
 {
 	DDRD |= (S0 | S1 | S2);			// PD3, PD4, PD5 as OUTPUT
-	
-	enableChannel(LIGHT_S);
+	enableChannel(CH3);
 }
-
 
 void enableChannel(int ch)
 {
