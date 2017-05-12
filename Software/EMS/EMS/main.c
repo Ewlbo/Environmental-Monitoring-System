@@ -1,19 +1,19 @@
-/*
- * EMS.c
- *
- * Created: 10.05.2017 09:58:57
- * Author : Helvijs Adams
- */ 
-// Søren did this
+//			 ________  ___ _____ 
+//			|  ___|  \/  |/  ___|
+//			| |__ | .  . |\ `--. 
+//			|  __|| |\/| | `--. \
+//			| |___| |  | |/\__/ /
+//			\____/\_|  |_/\____/ 
+//
+//	Main code for Environmental Monitoring System - 10.05.2017
+//
+
+                     
 #include <avr/io.h>
 
 
 int main(void)
 {
-    /* Replace with your application code */
-    while (1) 
-    {
-		
-    }
+
 }
 
