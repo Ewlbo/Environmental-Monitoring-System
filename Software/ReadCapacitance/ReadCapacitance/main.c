@@ -1,3 +1,14 @@
+//	______ _____  ___ ______      _____   ___  ______  ___  _____ _____ _____ ___   _   _ _____  _____
+//	| ___ \  ___|/ _ \|  _  \    /  __ \ / _ \ | ___ \/ _ \/  __ \_   _|_   _/ _ \ | \ | /  __ \|  ___|
+//	| |_/ / |__ / /_\ \ | | |    | /  \// /_\ \| |_/ / /_\ \ /  \/ | |   | |/ /_\ \|  \| | /  \/| |__
+//	|    /|  __||  _  | | | |    | |    |  _  ||  __/|  _  | |     | |   | ||  _  || . ` | |    |  __|
+//	| |\ \| |___| | | | |/ /     | \__/\| | | || |   | | | | \__/\_| |_  | || | | || |\  | \__/\| |___
+//	\_| \_\____/\_| |_/___/       \____/\_| |_/\_|   \_| |_/\____/\___/  \_/\_| |_/\_| \_/\____/\____/
+//
+//	Read capacitance from Telecontrolli capacitive rain sensor - for EMS 12.05.2017
+//
+
+
 #define F_CPU 16000000UL
 
 #include <avr/io.h>
@@ -47,7 +58,7 @@ int main(void)
 }
 
 void setup(void)
-{	
+{
 	// Capacitor pins
 	DDRC |= A0;				// A0 as OUTPUT
 	DDRC |= A1;				// A1 as OUTPUT
@@ -86,7 +97,7 @@ float readCapacitance(void)
 	
 	capacitance = (adc_result*IC)/(1023-adc_result);
 	
-	return(capacitance);	
+	return(capacitance);
 }
 
 
@@ -150,7 +161,7 @@ ISR(TIMER1_COMPA_vect)
 {
 	++timer;
 	
-	if(timer > 50)		
+	if(timer > 50)
 	{
 		// check gas approx. every 1.5s
 	}
