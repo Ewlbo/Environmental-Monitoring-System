@@ -26,15 +26,8 @@ void setup(void);
 
 int main(void)
 {
-	setup();
 	int temp = 26;
 	transmit("Temperature ",temp);
-
-}
-
-void setup(void)
-{
-	
 }
 
 void transmit(char *message, int var)
