@@ -3,11 +3,10 @@
 // 
 // Typical data stream in HEX:
 // 4F06636C35513A21D-0F613E914NW
-// Data stream   4F 066 36C   355   13A      21D   -0F     61         3E9   14          NW  == 25 long in hex
+// Data stream   4F 066 36C   355   13A      21D   -0F     61         3E9   14          NW  == 29 long in hex
 // Type          ID GAS CELL1 CELL2 RAIN     LIGHT TEMP    HUM        PRESS SPD         DIR
 // Data type        ADC ADC   ADC   CAPACITY ADC   DEGREES PERCENTAGE hPa   REVOLUTIONS
 // Place #       1  2   3     4     5        6     7       8          9     10          11
-
 
 #ifndef HEADER_H_
 #define HEADER_H_
@@ -19,7 +18,6 @@
 
 #define false 0
 #define true 1
-int sec;			// 1 second has passed
 
 // Forward declaration
 void enableChannel(int ch);
@@ -36,10 +34,12 @@ int readCell1(void);
 int readCell2(void);
 int readLight(void);
 float readCapacitance(void);
-char* windDirection(void);
+void windDirection(void);
+int readWindSpeed(void);
+void realTime(void);
 
 // Data stream to be sent with RF module
-char dataStream[29];
+char dataStream[32];
 char hex[5];
 
 // EPPROM 
@@ -61,7 +61,5 @@ uint16_t ReadADC(uint8_t adcx);
 #define CH2 2			// Photocell 2
 #define	CH3 3			// Wind direction
 #define CH4 4			// Wind speed
-
-
 
 #endif /* HEADER_H_ */

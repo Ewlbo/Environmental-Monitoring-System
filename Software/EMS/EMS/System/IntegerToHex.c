@@ -4,10 +4,10 @@
 void intToHex(int var)
 {
 	int i;
-	if (var>255)
+	/*if (var>255)
 	i = 2;
 	else
-	i = 1;
+	i = 1;*/
 	
 	if (var<=15)
 	{
@@ -43,6 +43,7 @@ void intToHex(int var)
 	{
 		long int quotient;
 		int temp;
+		i = 0;
 		quotient = var;
 		while(quotient!=0)
 		{
@@ -56,7 +57,7 @@ void intToHex(int var)
 			{
 				temp = temp + 55;
 			}
-			hex[i--]= temp;
+			hex[i++]= temp;
 			quotient = quotient / 16;
 		}
 	}

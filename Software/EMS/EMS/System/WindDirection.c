@@ -1,46 +1,49 @@
 #include "../header.h"
 #include <avr/io.h>
 #include <string.h>
+#include <stdio.h>
 
 
-char* windDirection(void)
+void windDirection(void)
 {
 	enableChannel(CH3);
 	int i = ReadADC(7);
-	char *winDir= malloc (sizeof (char) * 2);
+	i = 240;
 	
 	if (i > 230 && i < 250)
 	{
-		strcpy(winDir,"N");
+		dataStream[27] = 78;
 	}
 	if (i > 110 && i < 150)
 	{
-		strcpy(winDir,"NE");
+		dataStream[27] = 78;
+		dataStream[28] = 69;
 	}
 	if (i > 10 && i < 140)
 	{
-		strcpy(winDir,"E");
+		dataStream[28] = 69;
 	}
 	if (i > 840 && i < 880)
 	{
-		strcpy(winDir,"SE");
+		dataStream[28] = 83;
+		dataStream[28] = 69;
 	}
 	if (i > 710 && i < 750)
 	{
-		strcpy(winDir,"S");
+		dataStream[28] = 83;
 	}
 	if (i > 590 && i < 630)
 	{
-		strcpy(winDir,"SW");
+		dataStream[28] = 83;
+		dataStream[28] = 87;
 	}
 	if (i > 490 && i < 530)
 	{
-		strcpy(winDir,"W");
+		dataStream[28] = 87;
 	}
 	if (i > 340 && i < 380)
 	{
-		strcpy(winDir,"NW");
-	}
-	return(char *)winDir;
-	
+		dataStream[27] = 78;
+		dataStream[28] = 87;
+	}	
 }
