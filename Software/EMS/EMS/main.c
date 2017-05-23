@@ -88,22 +88,22 @@ void gatherData(void)
 	// CELL1
 	int getCell1 = readCell1();
 	intToHex(getCell1);
-	assignData(getCell1,hex,2);
+	assignData(getCell1,hex,3);
 	
 	// CELL2
 	int getCell2 = readCell1();
 	intToHex(getCell2);
-	assignData(getCell2,hex,2);
+	assignData(getCell2,hex,4);
 	
 	// RAIN
 	int getRain = readCapacitance();
 	intToHex(getRain);
-	assignData(getRain,hex,3);
+	assignData(getRain,hex,5);
 	
 	// LIGHT
 	int getLight = readLight();
 	intToHex(getLight);
-	assignData(getLight,hex,4);
+	assignData(getLight,hex,6);
 	
 	// Read from BME280 (temperature, humidity, pressure)
 	int32_t temp;
@@ -113,20 +113,24 @@ void gatherData(void)
 	
 	// TEMP
 	intToHex(temp);
-	assignData(temp,hex,5);
+	assignData(temp,hex,7);
 	
 	// HUM
 	intToHex(hum);
-	assignData(hum,hex,6);
+	assignData(hum,hex,8);
 	
 	// PRESS
 	intToHex(press);
-	assignData(press,hex,7);
+	assignData(press,hex,9);
 	
 	// SPD
+	//int getWindSpeed = readWindSpeed();
+	//intToHex(getWindSpeed);
+	//assignData(getWindSpeed,hex,10);
 	
 	// DIR
 	const char* windDir = windDirection();
+	assignData(0,windDir,11)
 		
 }
 
