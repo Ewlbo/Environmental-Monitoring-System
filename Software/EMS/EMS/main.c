@@ -1,4 +1,4 @@
-//			 ________  ___ _____ 
+/*			 ________  ___ _____ 
 //			|  ___|  \/  |/  ___|
 //			| |__ | .  . |\ `--. 
 //			|  __|| |\/| | `--. \
@@ -6,8 +6,7 @@
 //			\____/\_|  |_/\____/ 
 //
 //	Main code for Environmental Monitoring System - 10.05.2017
-//
-
+*/
 
 #include "header.h"               
 #include <avr/io.h>
@@ -16,81 +15,377 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
-#include <time.h>
+#include <avr/eeprom.h>
+#include <stdint.h>
+#include "System/BME280/bme280_i2c.h"
+#include "System/BME280/i2cmaster.h"
 
-nRF24L01 *setup_rf(void);
-void transmit(char *message, int var);
-void receive(void);
-void process_message(char *message);
-void setup(void);
+// UART
+#include "UART/STDIO_UART.h"
+#define BAUD 9600
+
+volatile unsigned long timer;
+int sec = 0;
+int alert = false;
 
 int main(void)
 {
-	int temp = 26;
-	transmit("Temperature ",temp);
-}
-
-void transmit(char *message, int var)
-{
-	char variable[8];								// Placeholder
-	itoa(var, variable, 10);						// Convert integer to string
-	char text[30];									// Placeholder
-	strcpy(text, message);							// Copy string from pointer *message
-	strcat(text, variable);							// Combine *message and variable
-	int messageLength = strlen(text);				// Get the length
+	ioinit();			// Init. UART
+	setup();			// Init. setup
 	
-	if (messageLength>30)							// If string exceeds length (nRF24L01 max packet size = 32 bytes)
+	while(true)
 	{
-		memset(text, 0, sizeof(text));				// Clear string
-		strcpy(text, "Error: string too long");
-		messageLength = strlen(text);
+		// Do nothing
 	}
-
-	uint8_t to_address[5] = { 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 };
-	nRF24L01 *rf = setup_rf();
-	nRF24L01Message msg;
-	nRF24L01_flush_transmit_message(rf);
-	memcpy(msg.data, text, messageLength);
-	msg.length = strlen((char *)msg.data) + 1;
-	nRF24L01_transmit(rf, to_address, &msg);
 }
 
-void receive(void)
+void setup(void)
 {
-	uint8_t address[5] = { 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 };
-	nRF24L01 *rf =setup_rf();
-	nRF24L01_listen(rf,0, address);
-	uint8_t addr[5];
-	nRF24L01_read_register(rf, CONFIG, addr,1);
-	while (nRF24L01_data_received(rf))
+	_delay_ms(500);
+	printf("EMS is running, no errors found\r");
+
+	// Analog multiplexer
+	DDRD |= (S0 | S1 | S2);	// PD3, PD4, PD5 as OUTPUT
+	enableChannel(CH0);		// Start at channel 0
+	
+	// Capacitor pins
+	DDRC |= A0;				// A0 as OUTPUT
+	DDRC |= A1;				// A1 as OUTPUT
+	
+	// IR LED toggle for wind speed measurement
+	DDRD |= 0x80;			// PD7 as OUTPUT
+	PORTD &= ~(0x80);		// PD7 LOW
+	
+	// 16-bit Timer1
+	TCCR1A = (1 << WGM11);	// Set CTC Bit
+	OCR1B = 156;
+	TIMSK1 = (1 << OCIE1A);
+	TCCR1B = (1 << CS10);	// No prescaler
+	
+	// ADC
+	ADMUX=(1<<REFS0);									// For Aref = AVcc;
+	ADCSRA=(1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);	// Pre-scaler div factor =128
+	
+	sei();					// Enable interrupt
+	_delay_ms(10);
+	if (alert == true)
 	{
-		nRF24L01Message msg;
-		nRF24L01_read_received_data(rf, &msg);
-		process_message((char *)msg.data);
+		printf("Alert detected \r");
 	}
-	nRF24L01_listen(rf, 0, address);
 }
 
-void process_message(char *message)
+void gatherData(void)
 {
-	if (strcmp(message, "Message") == 0)
+	printf("Function gatherData(); called\r");
+	// Fake data incoming:
+	int getGas = 500;
+	int getCell1 = 700;
+	int getCell2 = 724;
+	int getRain = 250;
+	int getLight = 150;
+	int temp = 24;
+	int hum = 55;
+	int press = 1005;
+	int getWindSpeed = 14;
+	
+	// ID
+	uint8_t getID = eeprom_read_byte((uint8_t*)location);	// Get ID from EEPROM
+	intToHex(getID);										// Transform it to HEX
+	assignData(getID,hex,1);								// Assign to dataStream
+	
+	// GAS SENSOR
+	//int getGas = readGas();
+	intToHex(getGas);
+	assignData(getGas,hex,2);
+	
+	// CELL1
+	//int getCell1 = readCell1();
+	intToHex(getCell1);
+	assignData(getCell1,hex,3);
+	
+	// CELL2
+	//int getCell2 = readCell1();
+	
+	intToHex(getCell2);
+	assignData(getCell2,hex,4);
+	
+	// RAIN SENSOR
+	//int getRain = readCapacitance();
+	
+	intToHex(getRain);
+	assignData(getRain,hex,5);
+	
+	// LIGHT SENSOR
+	//int getLight = readLight();
+	
+	intToHex(getLight);
+	assignData(getLight,hex,6);
+	
+	// Read from BME280 (temperature, humidity, pressure)
+	//int32_t temp;
+	//uint32_t press;
+	//uint32_t hum;
+	//BME280_readout(&temp, &press, &hum);
+	
+	// TEMPERATURE
+	intToHex(temp);
+	assignData(temp,hex,7);
+	
+	// HUMIDITY
+	intToHex(hum);
+	assignData(hum,hex,8);
+	
+	// PRESSURE
+	intToHex(press);
+	assignData(press,hex,9);
+	
+	// WIND SPEED
+	//int getWindSpeed = readWindSpeed();
+	intToHex(getWindSpeed);
+	assignData(getWindSpeed,hex,10);
+	
+	// WIND DIRECTION
+	windDirection();
+
+	printf("Datastream: %s\r",dataStream);
+}
+
+void realTime(void)
+{
+	alert = true;
+	printf("Realtime data enabled\r");
+	gatherData();
+	transmit(dataStream);
+}
+
+void getAlert(int state)
+{
+	switch(state)
 	{
-		// Do something
+		case 0:
+		alert = false;
+		break;
+		case 1:
+		alert = true;
+		printf("Alert detected \r");
+		break;
 	}
 }
 
-nRF24L01 *setup_rf(void) {
-	nRF24L01 *rf = nRF24L01_init();
-	rf->ss.port = &PORTB;
-	rf->ss.pin = PB1;
-	rf->ce.port = &PORTB;
-	rf->ce.pin = PB2;
-	rf->sck.port = &PORTB;
-	rf->sck.pin = PB5;
-	rf->mosi.port = &PORTB;
-	rf->mosi.pin = PB3;
-	rf->miso.port = &PORTB;
-	rf->miso.pin = PB4;
-	nRF24L01_begin(rf);
-	return rf;
+void assignData(int dec, const char *hex, int place)
+{
+	switch(place)
+	{
+		case 1:		// ID
+		if (dec<=15)
+		{
+			dataStream[0] = 48;			// 0
+			dataStream[1] = hex [0];
+		}
+		else
+		{
+			dataStream[0] = hex [1];
+			dataStream[1] = hex [0];
+		}
+		break;
+		case 2:		// GAS
+		if (dec<=15)
+		{
+			dataStream[2] = 48;
+			dataStream[3] = 48;
+			dataStream[4] = hex [0];
+		}
+		else if (dec>15 && dec<=255)
+		{
+			dataStream[2] = 48;
+			dataStream[3] = hex [1];
+			dataStream[4] = hex [0];
+		}
+		else
+		{
+			dataStream[2] = hex [2];
+			dataStream[3] = hex [1];
+			dataStream[4] = hex [0];
+		}
+		break;
+		case 3:		// CELL1
+		if (dec<=15)
+		{
+			dataStream[5] = 48;
+			dataStream[6] = 48;
+			dataStream[7] = hex [0];
+		}
+		else if (dec>15 && dec<=255)
+		{
+			dataStream[5] = 48;
+			dataStream[6] = hex [1];
+			dataStream[7] = hex [0];
+		}
+		else
+		{
+			dataStream[5] = hex [2];
+			dataStream[6] = hex [1];
+			dataStream[7] = hex [0];
+		}
+		break;
+		case 4:		// CELL2
+		if (dec<=15)
+		{
+			dataStream[8] = 48;
+			dataStream[9] = 48;
+			dataStream[10] = hex [0];
+		}
+		else if (dec>15 && dec<=255)
+		{
+			dataStream[8] = 48;
+			dataStream[9] = hex [1];
+			dataStream[10] = hex [0];
+		}
+		else
+		{
+			dataStream[8] = hex [2];
+			dataStream[9] = hex [1];
+			dataStream[10] = hex [0];
+		}
+		break;
+		case 5:		// RAIN
+		if (dec<=15)
+		{
+			dataStream[11] = 48;
+			dataStream[12] = 48;
+			dataStream[13] = hex [0];
+		}
+		else if (dec>15 && dec<=255)
+		{
+			dataStream[11] = 48;
+			dataStream[12] = hex [1];
+			dataStream[13] = hex [0];
+		}
+		else
+		{
+			dataStream[11] = hex [2];
+			dataStream[12] = hex [1];
+			dataStream[13] = hex [0];
+		}
+		break;
+		case 6:		// LIGHT
+		if (dec<=15)
+		{
+			dataStream[14] = 48;
+			dataStream[15] = 48;
+			dataStream[16] = hex [0];
+		}
+		else if (dec>15 && dec<=255)
+		{
+			dataStream[14] = 48;
+			dataStream[15] = hex [1];
+			dataStream[16] = hex [0];
+		}
+		else
+		{
+			dataStream[14] = hex [2];
+			dataStream[15] = hex [1];
+			dataStream[16] = hex [0];
+		}
+		break;
+		case 7:		// TEMP
+		if (dec<0)
+		{
+			dataStream[17] = 45;		// -
+			dec = dec * (-1);
+		}
+		else
+		{
+			dataStream[17] = 43;		// +
+		}
+		if (dec<=15)
+		{
+			dataStream[18] = 48;
+			dataStream[19] = hex [0];
+		}
+		else
+		{
+			dataStream[18] = hex [1];
+			dataStream[19] = hex [0];
+		}
+		break;
+		case 8:		// HUM
+		if (dec<=15)
+		{
+			dataStream[20] = 48;
+			dataStream[21] = hex [0];
+		}
+		else
+		{
+			dataStream[20] = hex [1];
+			dataStream[21] = hex [0];
+		}
+		break;
+		case 9:		// PRESS
+		if (dec<=15)
+		{
+			dataStream[22] = 48;
+			dataStream[23] = 48;
+			dataStream[24] = hex [0];
+		}
+		else if (dec>15 && dec<=255)
+		{
+			dataStream[22] = 48;
+			dataStream[23] = hex [1];
+			dataStream[24] = hex [0];
+		}
+		else
+		{
+			dataStream[22] = hex [2];
+			dataStream[23] = hex [1];
+			dataStream[24] = hex [0];
+		}
+		break;
+		case 10:	// SPD
+		if (dec<=15)
+		{
+			dataStream[25] = 48;
+			dataStream[26] = hex [0];
+		}
+		else
+		{
+			dataStream[25] = hex [1];
+			dataStream[26] = hex [0];
+		}
+		break;
+	}
+}
+
+// Interrupt Service Routine (approx. every second)
+ISR(TIMER1_COMPA_vect)
+{
+	++timer;
+	
+	if(timer > 15600)	
+	{
+		// For testing/presentation purposes enable realtime
+		//realTime();
+		
+		timer = 0;
+		int gas = readGas();
+		int limit = 400;
+		if (gas>limit)
+		{
+			// Enable realtime datastream if set gas level exceeds limit
+			getAlert(true);
+			printf("Gas exceeds limit. Enabling realtime data.\r");		
+			realTime();
+		}
+		else
+		{
+			getAlert(false);
+		}
+		sec++;
+	}
+	if (sec>=60)
+	{
+		sec = 0;
+		gatherData();
+		transmit(dataStream);
+	}
 }

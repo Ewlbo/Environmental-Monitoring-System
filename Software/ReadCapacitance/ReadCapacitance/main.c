@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <util/delay.h>
 
-unsigned long micro(void);
+
 void setup(void);
 float readCapacitance(void);
 

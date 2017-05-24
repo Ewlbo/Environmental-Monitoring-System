@@ -23,11 +23,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000114  00000000  00000000  00001ed4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000004a1  00000000  00000000  00001fe8  2**0
+ 10 .debug_str    0000049e  00000000  00000000  00001fe8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000002e6  00000000  00000000  00002489  2**0
+ 11 .debug_loc    000002e6  00000000  00000000  00002486  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000048  00000000  00000000  0000276f  2**0
+ 12 .debug_ranges 00000048  00000000  00000000  0000276c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -104,7 +104,7 @@ Disassembly of section .text:
 }
 
 void setup(void)
-{	
+{
 	// Capacitor pins
 	DDRC |= A0;				// A0 as OUTPUT
   a6:	38 9a       	sbi	0x07, 0	; 7
@@ -228,7 +228,7 @@ float readCapacitance(void)
 	
 	capacitance = (adc_result*IC)/(1023-adc_result);
 	
-	return(capacitance);	
+	return(capacitance);
  13c:	bc 01       	movw	r22, r24
  13e:	99 0f       	add	r25, r25
  140:	88 0b       	sbc	r24, r24
@@ -511,7 +511,7 @@ ISR(TIMER1_COMPA_vect)
  2c6:	a0 93 18 01 	sts	0x0118, r26	; 0x800118 <timer+0x2>
  2ca:	b0 93 19 01 	sts	0x0119, r27	; 0x800119 <timer+0x3>
 	
-	if(timer > 50)		
+	if(timer > 50)
  2ce:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <timer>
  2d2:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <timer+0x1>
  2d6:	a0 91 18 01 	lds	r26, 0x0118	; 0x800118 <timer+0x2>

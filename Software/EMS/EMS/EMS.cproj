@@ -133,10 +133,60 @@
     <Compile Include="RF\nrf24l01.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="System\AnalogMultiplexer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\BatteryLevels.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\BME280\bme280_i2c.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\BME280\bme280_i2c.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\BME280\i2cmaster.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\BME280\twimaster.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\LightSensor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\ReadADC.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\ReadCapacitance.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\ReadGAS.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\RF.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\IntegerToHex.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\WindDirection.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\WindSpeed.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="UART\STDIO_UART.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="UART\STDIO_UART.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Sensors" />
-    <Folder Include="RF" />
+    <Folder Include="RF\" />
+    <Folder Include="System\BME280" />
+    <Folder Include="UART" />
+    <Folder Include="System" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

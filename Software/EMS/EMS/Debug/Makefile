@@ -33,14 +33,29 @@ LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
-../Sensors \
-../RF
+../RF/ \
+../System/BME280 \
+../UART \
+../System
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../main.c \
-../RF/nrf24l01.c
+../RF/nrf24l01.c \
+../System/AnalogMultiplexer.c \
+../System/BatteryLevels.c \
+../System/BME280/bme280_i2c.c \
+../System/BME280/twimaster.c \
+../System/LightSensor.c \
+../System/ReadADC.c \
+../System/ReadCapacitance.c \
+../System/ReadGAS.c \
+../System/RF.c \
+../System/IntegerToHex.c \
+../System/WindDirection.c \
+../System/WindSpeed.c \
+../UART/STDIO_UART.c
 
 
 PREPROCESSING_SRCS += 
@@ -51,19 +66,71 @@ ASM_SRCS +=
 
 OBJS +=  \
 main.o \
-RF/nrf24l01.o
+RF/nrf24l01.o \
+System/AnalogMultiplexer.o \
+System/BatteryLevels.o \
+System/BME280/bme280_i2c.o \
+System/BME280/twimaster.o \
+System/LightSensor.o \
+System/ReadADC.o \
+System/ReadCapacitance.o \
+System/ReadGAS.o \
+System/RF.o \
+System/IntegerToHex.o \
+System/WindDirection.o \
+System/WindSpeed.o \
+UART/STDIO_UART.o
 
 OBJS_AS_ARGS +=  \
 main.o \
-RF/nrf24l01.o
+RF/nrf24l01.o \
+System/AnalogMultiplexer.o \
+System/BatteryLevels.o \
+System/BME280/bme280_i2c.o \
+System/BME280/twimaster.o \
+System/LightSensor.o \
+System/ReadADC.o \
+System/ReadCapacitance.o \
+System/ReadGAS.o \
+System/RF.o \
+System/IntegerToHex.o \
+System/WindDirection.o \
+System/WindSpeed.o \
+UART/STDIO_UART.o
 
 C_DEPS +=  \
 main.d \
-RF/nrf24l01.d
+RF/nrf24l01.d \
+System/AnalogMultiplexer.d \
+System/BatteryLevels.d \
+System/BME280/bme280_i2c.d \
+System/BME280/twimaster.d \
+System/LightSensor.d \
+System/ReadADC.d \
+System/ReadCapacitance.d \
+System/ReadGAS.d \
+System/RF.d \
+System/IntegerToHex.d \
+System/WindDirection.d \
+System/WindSpeed.d \
+UART/STDIO_UART.d
 
 C_DEPS_AS_ARGS +=  \
 main.d \
-RF/nrf24l01.d
+RF/nrf24l01.d \
+System/AnalogMultiplexer.d \
+System/BatteryLevels.d \
+System/BME280/bme280_i2c.d \
+System/BME280/twimaster.d \
+System/LightSensor.d \
+System/ReadADC.d \
+System/ReadCapacitance.d \
+System/ReadGAS.d \
+System/RF.d \
+System/IntegerToHex.d \
+System/WindDirection.d \
+System/WindSpeed.d \
+UART/STDIO_UART.d
 
 OUTPUT_FILE_PATH +=EMS.elf
 
@@ -84,6 +151,32 @@ LINKER_SCRIPT_DEP+=
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ./%.o: .././%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -92,6 +185,27 @@ LINKER_SCRIPT_DEP+=
 	
 
 RF/%.o: ../RF/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+System/%.o: ../System/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+System/BME280/%.o: ../System/BME280/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+UART/%.o: ../UART/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
