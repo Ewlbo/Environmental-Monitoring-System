@@ -4,10 +4,6 @@
 void intToHex(int var)
 {
 	int i;
-	/*if (var>255)
-	i = 2;
-	else
-	i = 1;*/
 	
 	if (var<=15)
 	{

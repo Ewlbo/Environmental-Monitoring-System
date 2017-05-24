@@ -41,6 +41,7 @@ int main(void)
 
 void setup(void)
 {
+	_delay_ms(500);
 	printf("EMS is running, no errors found\r");
 
 	// Analog multiplexer
@@ -178,7 +179,7 @@ void assignData(int dec, const char *hex, int place)
 		case 1:		// ID
 		if (dec<=15)
 		{
-			dataStream[0] = 48;
+			dataStream[0] = 48;			// 0
 			dataStream[1] = hex [0];
 		}
 		else
