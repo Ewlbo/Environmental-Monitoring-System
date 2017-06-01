@@ -10,7 +10,7 @@ void transmit(char *message)
 	strcpy(text, message);							// Copy string from *message to placeholder
 	int messageLength = strlen(text);				// Get the length
 
-	if (messageLength>=30)							// If string exceeds length (nRF24L01 max packet size = 32 bytes)
+	if (messageLength>30)							// If string exceeds length (nRF24L01 max packet size = 32 bytes)
 	{
 		memset(text, 0, sizeof(text));				// Clear string
 		strcpy(text, "Error: string too long");
@@ -20,7 +20,7 @@ void transmit(char *message)
 	else if (messageLength<28)
 	{
 		memset(text, 0, sizeof(text));				// Clear string
-		strcpy(text, "Error: string too long");
+		strcpy(text, "Error: missing data");
 		printf("Error: missing data\r");
 		messageLength = strlen(text);
 		
@@ -64,9 +64,9 @@ void process_message(char *message)
 nRF24L01 *setup_rf(void) {
 	nRF24L01 *rf = nRF24L01_init();
 	rf->ss.port = &PORTB;
-	rf->ss.pin = PB1;
+	rf->ss.pin = PB2;
 	rf->ce.port = &PORTB;
-	rf->ce.pin = PB2;
+	rf->ce.pin = PB1;
 	rf->sck.port = &PORTB;
 	rf->sck.pin = PB5;
 	rf->mosi.port = &PORTB;

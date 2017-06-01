@@ -11,7 +11,7 @@
 #ifndef HEADER_H_
 #define HEADER_H_
 
-#define F_CPU 16000000UL
+#define F_CPU 8000000UL
 
 #include "RF/nrf24l01.h"
 #include "RF/nrf24l01-mnemonics.h"
@@ -49,17 +49,18 @@ char hex[5];
 uint16_t ReadADC(uint8_t adcx);
 
 // Rain sensor
-#define A0 0x01				// PC0 (capacitive rain sensor pin 1)
-#define A1 0x02				// PC1 (capacitive rain sensor pin 2)
+#define A0 0x02				// PC1 (capacitive rain sensor pin 1)
+#define A1 0x04				// PC2 (capacitive rain sensor pin 2)
 
 // Analog multiplexer
-#define S0 0x08			// Select pin S0 on PD3
-#define S1 0x10			// Select pin S1 on PD4
-#define S2 0x20			// Select pin S2 on PD5
+#define S0 0x04			// Select pin S0 on PD2
+#define S1 0x08			// Select pin S1 on PD3
+#define S2 0x10			// Select pin S2 on PD4
 #define CH0 0			// Light sensor
 #define CH1 1			// Photocell 1
 #define CH2 2			// Photocell 2
 #define	CH3 3			// Wind direction
 #define CH4 4			// Wind speed
+
 
 #endif /* HEADER_H_ */

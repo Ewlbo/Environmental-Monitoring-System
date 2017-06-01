@@ -19,7 +19,7 @@ float readCapacitance(void)
 	
 	DDRC &= ~(A0);				// A0 as INPUT
 	PORTC |= A1;				// A1 HIGH (charge)
-	adc_result = ReadADC(0);	// Read ADC from A0
+	adc_result = ReadADC(1);	// Read ADC from A0
 	PORTC &= ~(A1);				// A1 LOW (discharge)
 	DDRC |= A0;					// A0 as OUTPUT (to make sure it discharges)
 	

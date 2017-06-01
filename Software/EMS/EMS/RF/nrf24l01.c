@@ -1,5 +1,5 @@
 #ifndef F_CPU
-#define F_CPU 16000000UL //use 8MHz as default
+#define F_CPU 8000000UL //use 8MHz as default
 #endif
 #include <stdlib.h>
 #include <stdbool.h>

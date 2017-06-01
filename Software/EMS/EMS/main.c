@@ -17,8 +17,10 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 #include <stdint.h>
-#include "System/BME280/bme280_i2c.h"
-#include "System/BME280/i2cmaster.h"
+//#include "System/BME280/bme280_i2c.h"
+//#include "System/BME280/i2cmaster.h"
+#include "System/BMP180/bmp085.h"
+#include "System/dht/dht.h"
 
 // UART
 #include "UART/STDIO_UART.h"
@@ -43,6 +45,7 @@ void setup(void)
 {
 	_delay_ms(500);
 	printf("EMS is running, no errors found\r");
+	transmit("EMS is running ###############");
 
 	// Analog multiplexer
 	DDRD |= (S0 | S1 | S2);	// PD3, PD4, PD5 as OUTPUT
@@ -53,8 +56,8 @@ void setup(void)
 	DDRC |= A1;				// A1 as OUTPUT
 	
 	// IR LED toggle for wind speed measurement
-	DDRD |= 0x80;			// PD7 as OUTPUT
-	PORTD &= ~(0x80);		// PD7 LOW
+	//DDRD |= 0x80;			// PD7 as OUTPUT
+	//PORTD &= ~(0x80);		// PD7 LOW
 	
 	// 16-bit Timer1
 	TCCR1A = (1 << WGM11);	// Set CTC Bit
@@ -72,21 +75,24 @@ void setup(void)
 	{
 		printf("Alert detected \r");
 	}
+	bmp085_init();
 }
 
 void gatherData(void)
 {
 	printf("Function gatherData(); called\r");
 	// Fake data incoming:
-	int getGas = 500;
-	int getCell1 = 700;
-	int getCell2 = 724;
-	int getRain = 250;
-	int getLight = 150;
-	int temp = 24;
-	int hum = 55;
-	int press = 1005;
-	int getWindSpeed = 14;
+	//int getGas = 500;
+	int getCell1 = 823;
+	int getCell2 = 800;
+	//int getRain = 250;
+	//int getLight = 150;
+	//int temp = 24;
+	//int hum = 55;
+	//int press = 1005;
+	//int getWindSpeed = 14;
+	int8_t temperature = 0;
+	int8_t hum = 0;
 	
 	// ID
 	uint8_t getID = eeprom_read_byte((uint8_t*)location);	// Get ID from EEPROM
@@ -94,7 +100,7 @@ void gatherData(void)
 	assignData(getID,hex,1);								// Assign to dataStream
 	
 	// GAS SENSOR
-	//int getGas = readGas();
+	int getGas = readGas();
 	intToHex(getGas);
 	assignData(getGas,hex,2);
 	
@@ -105,19 +111,16 @@ void gatherData(void)
 	
 	// CELL2
 	//int getCell2 = readCell1();
-	
 	intToHex(getCell2);
 	assignData(getCell2,hex,4);
 	
 	// RAIN SENSOR
-	//int getRain = readCapacitance();
-	
+	int getRain = readCapacitance();
 	intToHex(getRain);
 	assignData(getRain,hex,5);
 	
 	// LIGHT SENSOR
-	//int getLight = readLight();
-	
+	int getLight = readLight();
 	intToHex(getLight);
 	assignData(getLight,hex,6);
 	
@@ -128,19 +131,23 @@ void gatherData(void)
 	//BME280_readout(&temp, &press, &hum);
 	
 	// TEMPERATURE
+	int temp = bmp085_gettemperature();
 	intToHex(temp);
 	assignData(temp,hex,7);
 	
 	// HUMIDITY
+	dht_gettemperaturehumidity(&temperature, &hum);
 	intToHex(hum);
 	assignData(hum,hex,8);
 	
 	// PRESSURE
-	intToHex(press);
-	assignData(press,hex,9);
+	long press = bmp085_getpressure();
+	int pressf = press/100;
+	intToHex(pressf);
+	assignData(pressf,hex,9);
 	
 	// WIND SPEED
-	//int getWindSpeed = readWindSpeed();
+	int getWindSpeed = readWindSpeed();
 	intToHex(getWindSpeed);
 	assignData(getWindSpeed,hex,10);
 	
@@ -382,7 +389,7 @@ ISR(TIMER1_COMPA_vect)
 		}
 		sec++;
 	}
-	if (sec>=60)
+	if (sec>=3)
 	{
 		sec = 0;
 		gatherData();
