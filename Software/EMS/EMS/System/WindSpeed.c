@@ -26,7 +26,7 @@ int readWindSpeed(void)
 		if (ms>=measureTime)
 		{
 			measuring = false;
-			PORTD &= ~(0x80);	// Disable IR LED
+			//PORTD &= ~(0x80);	// Disable IR LED
 			break;
 		}
 	}
