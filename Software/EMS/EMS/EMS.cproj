@@ -20,12 +20,12 @@
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>
     <ProgFlashFromRam>true</ProgFlashFromRam>
-    <RamSnippetAddress />
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
     <UncachedRange />
     <preserveEEPROM>true</preserveEEPROM>
-    <OverrideVtorValue />
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
     <BootSegment>2</BootSegment>
-    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
     <AsfFrameworkConfig>
       <framework-data>
         <options />
@@ -38,6 +38,20 @@
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
+    <avrtool>com.atmel.avrdbg.tool.atmelice</avrtool>
+    <avrtoolserialnumber>J41800060164</avrtoolserialnumber>
+    <avrdeviceexpectedsignature>0x1E950F</avrdeviceexpectedsignature>
+    <com_atmel_avrdbg_tool_atmelice>
+      <ToolOptions>
+        <InterfaceProperties>
+        </InterfaceProperties>
+        <InterfaceName>debugWIRE</InterfaceName>
+      </ToolOptions>
+      <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
+      <ToolNumber>J41800060164</ToolNumber>
+      <ToolName>Atmel-ICE</ToolName>
+    </com_atmel_avrdbg_tool_atmelice>
+    <avrtoolinterface>debugWIRE</avrtoolinterface>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -139,16 +153,22 @@
     <Compile Include="System\BatteryLevels.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="System\BME280\bme280_i2c.c">
+    <Compile Include="System\BMP180\bmp085.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="System\BME280\bme280_i2c.h">
+    <Compile Include="System\BMP180\bmp085.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="System\BME280\i2cmaster.h">
+    <Compile Include="System\dht\dht.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="System\BME280\twimaster.c">
+    <Compile Include="System\dht\dht.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\i2chw\i2cmaster.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="System\i2chw\twimaster.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="System\LightSensor.c">
@@ -184,7 +204,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RF\" />
-    <Folder Include="System\BME280" />
+    <Folder Include="System\BMP180" />
+    <Folder Include="System\i2chw\" />
+    <Folder Include="System\dht" />
     <Folder Include="UART" />
     <Folder Include="System" />
   </ItemGroup>

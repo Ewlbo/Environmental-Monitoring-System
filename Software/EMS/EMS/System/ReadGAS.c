@@ -3,6 +3,6 @@
 
 int readGas(void)
 {
-	int gasADC = ReadADC(6);
+	int gasADC = ReadADC(3);
 	return (gasADC);
 }

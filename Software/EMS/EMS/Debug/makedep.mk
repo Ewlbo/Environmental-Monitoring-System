@@ -10,9 +10,11 @@ System\AnalogMultiplexer.c
 
 System\BatteryLevels.c
 
-System\BME280\bme280_i2c.c
+System\BMP180\bmp085.c
 
-System\BME280\twimaster.c
+System\dht\dht.c
+
+System\i2chw\twimaster.c
 
 System\LightSensor.c
 

@@ -1,4 +1,3 @@
-#define F_CPU 16000000UL
 #include "../header.h"
 #include <avr/io.h>
 #include <util/delay.h>
@@ -12,12 +11,12 @@ int readWindSpeed(void)
 	int offState = 800;		// ADC value when IR LED is not blocked
 	int revolution = 0;
 	
-	enableChannel(CH4);		// Read from analog multiplexer channel 4
-	PORTD |= 0x80;			// Enable IR LED
+	enableChannel(CH0);		// Read from analog multiplexer channel 4
+	//PORTD |= 0x80;			// Enable IR LED
 	
 	while(measuring)
 	{
-		int IR = ReadADC(7);
+		int IR = ReadADC(0);
 		if (IR>offState)
 		{
 			revolution++;
@@ -27,7 +26,7 @@ int readWindSpeed(void)
 		if (ms>=measureTime)
 		{
 			measuring = false;
-			PORTD &= ~(0x80);	// Disable IR LED
+			//PORTD &= ~(0x80);	// Disable IR LED
 			break;
 		}
 	}
