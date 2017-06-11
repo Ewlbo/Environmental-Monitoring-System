@@ -3,6 +3,7 @@
 
 void intToHex(int var)
 {
+	memset(hex, 0, 5);
 	int i;
 	
 	if (var<=15)

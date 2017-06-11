@@ -2,13 +2,24 @@
 #include <avr/io.h>
 #include <string.h>
 #include <stdio.h>
+#include <util/delay.h>
 
+int wDir = 11;
 
 void windDirection(void)
 {
+	
 	enableChannel(CH1);
+	
 	int i = ReadADC(0);
-	i = 240;
+	if (i<10)
+	{
+		i = wDir;
+	}
+	else
+	{
+		wDir = i;
+	}
 	
 	if (i > 230 && i < 250)
 	{

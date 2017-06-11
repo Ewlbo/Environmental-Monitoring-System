@@ -34,10 +34,13 @@ int main(void)
 {
 	ioinit();			// Init. UART
 	setup();			// Init. setup
+	bmp085_init();
 	
-	while(true)
+	while(1)
 	{
-		// Do nothing
+		gatherData();
+		transmit(dataStream);
+		_delay_ms(1000);
 	}
 }
 
@@ -47,23 +50,33 @@ void setup(void)
 	printf("EMS is running, no errors found\r");
 	transmit("EMS is running ###############");
 
+	uint8_t setID = 42;
+	eeprom_update_byte((uint8_t *)location,setID);
+	
 	// Analog multiplexer
-	DDRD |= (S0 | S1 | S2);	// PD3, PD4, PD5 as OUTPUT
-	enableChannel(CH0);		// Start at channel 0
+	DDRC &= ~(0x01);
+	DDRD |= (S0 | S1);	// PD3, PD4, PD5 as OUTPUT
+
 	
 	// Capacitor pins
 	DDRC |= A0;				// A0 as OUTPUT
 	DDRC |= A1;				// A1 as OUTPUT
 	
-	// IR LED toggle for wind speed measurement
-	//DDRD |= 0x80;			// PD7 as OUTPUT
-	//PORTD &= ~(0x80);		// PD7 LOW
-	
-	// 16-bit Timer1
-	TCCR1A = (1 << WGM11);	// Set CTC Bit
-	OCR1B = 156;
-	TIMSK1 = (1 << OCIE1A);
-	TCCR1B = (1 << CS10);	// No prescaler
+
+	// initialize Timer1
+	cli();          // disable global interrupts
+	TCCR1A = 0;     // set entire TCCR1A register to 0
+	TCCR1B = 0;     // same for TCCR1B
+
+	// set compare match register to desired timer count:
+	OCR1A = 15600;
+	// turn on CTC mode:
+	TCCR1B |= (1 << WGM12);
+	// Set CS10 and CS12 bits for 1024 prescaler:
+	TCCR1B |= (1 << CS10);
+	TCCR1B |= (1 << CS12);
+	// enable timer compare interrupt:
+	TIMSK1 |= (1 << OCIE1A);
 	
 	// ADC
 	ADMUX=(1<<REFS0);									// For Aref = AVcc;
@@ -75,7 +88,7 @@ void setup(void)
 	{
 		printf("Alert detected \r");
 	}
-	bmp085_init();
+	
 }
 
 void gatherData(void)
@@ -87,10 +100,9 @@ void gatherData(void)
 	int getCell2 = 800;
 	//int getRain = 250;
 	//int getLight = 150;
-	//int temp = 24;
-	//int hum = 55;
-	//int press = 1005;
-	//int getWindSpeed = 14;
+	int pressf = 1005;
+	int temp = 22;
+	int getWindSpeed = 0;
 	int8_t temperature = 0;
 	int8_t hum = 0;
 	
@@ -131,7 +143,7 @@ void gatherData(void)
 	//BME280_readout(&temp, &press, &hum);
 	
 	// TEMPERATURE
-	int temp = bmp085_gettemperature();
+	//int temp = bmp085_gettemperature();
 	intToHex(temp);
 	assignData(temp,hex,7);
 	
@@ -139,15 +151,16 @@ void gatherData(void)
 	dht_gettemperaturehumidity(&temperature, &hum);
 	intToHex(hum);
 	assignData(hum,hex,8);
+	_delay_ms(10);
 	
 	// PRESSURE
-	long press = bmp085_getpressure();
-	int pressf = press/100;
+	//long press = bmp085_getpressure();
+	//int pressf = press/100;
 	intToHex(pressf);
 	assignData(pressf,hex,9);
 	
 	// WIND SPEED
-	int getWindSpeed = readWindSpeed();
+	//int getWindSpeed = readWindSpeed();
 	intToHex(getWindSpeed);
 	assignData(getWindSpeed,hex,10);
 	
@@ -162,6 +175,7 @@ void realTime(void)
 	alert = true;
 	printf("Realtime data enabled\r");
 	gatherData();
+	_delay_ms(10);
 	transmit(dataStream);
 }
 
@@ -363,36 +377,14 @@ void assignData(int dec, const char *hex, int place)
 	}
 }
 
-// Interrupt Service Routine (approx. every second)
-ISR(TIMER1_COMPA_vect)
+ISR(TIMER1_COMPA_vect)  // timer0 overflow interrupt
 {
-	++timer;
-	
-	if(timer > 15600)	
+	int gas = readGas();
+	if (gas>500)
 	{
-		// For testing/presentation purposes enable realtime
-		//realTime();
-		
-		timer = 0;
-		int gas = readGas();
-		int limit = 400;
-		if (gas>limit)
-		{
-			// Enable realtime datastream if set gas level exceeds limit
-			getAlert(true);
-			printf("Gas exceeds limit. Enabling realtime data.\r");		
-			realTime();
-		}
-		else
-		{
-			getAlert(false);
-		}
-		sec++;
-	}
-	if (sec>=3)
-	{
-		sec = 0;
-		gatherData();
-		transmit(dataStream);
+		printf("Gas detected\n");
+		realTime();
 	}
 }
+
+

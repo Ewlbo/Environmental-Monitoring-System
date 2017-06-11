@@ -6,18 +6,18 @@
 
 void transmit(char *message)
 {
-	char text[30];									// Placeholder
+	char text[29];									// Placeholder
 	strcpy(text, message);							// Copy string from *message to placeholder
 	int messageLength = strlen(text);				// Get the length
 
-	if (messageLength>30)							// If string exceeds length (nRF24L01 max packet size = 32 bytes)
+	if (messageLength>29)							// If string exceeds length (nRF24L01 max packet size = 32 bytes)
 	{
 		memset(text, 0, sizeof(text));				// Clear string
 		strcpy(text, "Error: string too long");
 		printf("Error: string too long\r");
 		messageLength = strlen(text);
 	}
-	else if (messageLength<28)
+	else if (messageLength<27)
 	{
 		memset(text, 0, sizeof(text));				// Clear string
 		strcpy(text, "Error: missing data");
@@ -25,7 +25,7 @@ void transmit(char *message)
 		messageLength = strlen(text);
 		
 	}
-	printf("Transmitting data: %s\r",text);
+	printf("Transmitting %s\r",text);
 	uint8_t to_address[5] = { 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 };
 	nRF24L01 *rf = setup_rf();
 	nRF24L01Message msg;

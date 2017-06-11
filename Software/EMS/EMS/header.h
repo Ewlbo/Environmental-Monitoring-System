@@ -19,6 +19,7 @@
 #define false 0
 #define true 1
 
+
 // Forward declaration
 void enableChannel(int ch);
 nRF24L01 *setup_rf(void);
@@ -55,12 +56,12 @@ uint16_t ReadADC(uint8_t adcx);
 // Analog multiplexer
 #define S0 0x04			// Select pin S0 on PD2
 #define S1 0x08			// Select pin S1 on PD3
-#define S2 0x10			// Select pin S2 on PD4
 #define CH0 0			// Light sensor
 #define CH1 1			// Photocell 1
 #define CH2 2			// Photocell 2
 #define	CH3 3			// Wind direction
-#define CH4 4			// Wind speed
+
+
 
 
 #endif /* HEADER_H_ */

@@ -3,7 +3,7 @@
 
 int readLight(void)
 {
-	enableChannel(CH4);
+	enableChannel(CH2);
 	int light = ReadADC(0);
 	return (light);
 }

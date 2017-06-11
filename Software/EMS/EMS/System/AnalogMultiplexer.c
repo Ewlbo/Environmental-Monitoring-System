@@ -15,26 +15,22 @@
 
 void enableChannel(int ch)
 {
+	PORTD &= ~(PD4);
 	switch(ch)
 	{
 		case 0:
-		PORTD &= ~(S0 | S1 | S2);	// All LOW (check flowchart and/or datasheet for select pin states)
+		PORTD &= ~(S0 | S1);	// All LOW (check flowchart and/or datasheet for select pin states)
 		break;
 		case 1:
 		PORTD |= S0;
-		PORTD &= ~(S1 | S2);
+		PORTD &= ~(S1);
 		break;
 		case 2:
 		PORTD |= S1;
-		PORTD &= ~(S0 | S2);
+		PORTD &= ~(S0);
 		break;
 		case 3:
 		PORTD |= (S0 | S1);
-		PORTD &= ~(S2);
-		break;
-		case 4:
-		PORTD |= S2;
-		PORTD &= ~(S0 | S1);
 		break;
 	}
 }
